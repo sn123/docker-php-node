@@ -1,6 +1,6 @@
 FROM goavega/docker-nginx-fpm-node
 LABEL MAINTAINER Goavega Docker Maintainers
-#RUN sed -i -E "s/;*clear_env\s*=\s*(yes|no)/clear_env=no/g" /etc/php/7.0/fpm/pool.d/www.conf
+RUN sed -i -E "s/;*clear_env\s*=\s*(yes|no)/clear_env=no/g" $fpm_pool
 COPY ./wp_env.sh /usr/local/bin/
 COPY ./entrypoint-app.sh /usr/local/bin/
 RUN chmod u+x /usr/local/bin/entrypoint-app.sh

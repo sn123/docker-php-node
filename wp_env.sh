@@ -17,7 +17,11 @@ update_settings(){
 
 set -ex
 update_settings
-#for var in `printenv | cut -f1 -d=`; do if [ "${!var}" != *\!* ] && [[ "$var" =~ [A-Z] ]]; then echo "env[$var]=\"${!var}\"" >> ${fpm_pool}; fi; done;
+#for var in `printenv | cut -f1 -d=`; do if [ "${!var}" != *\!* ] && [[ "$var" =~ [A-Z] ]]; then echo "$var=\"${!var}\"" >> /etc/environment; fi; done;
+#for var in `printenv | cut -f1 -d=`; do if [ "${!var}" != *\!* ] && [[ "$var" =~ [A-Z] ]]; then echo "$var=\"${!var}\"" >> /etc/environment; fi; done;
+#sed -i 's/location ~ \\.php$ {/location ~ \\.php$ {\n\tfastcgi_param HELLO "WORLD";/g' ./testfile'''''
+for var in `printenv | cut -f1 -d=`; do if [ "${!var}" != *\!* ] && [[ "$var" =~ [A-Z] ]]; then echo "fastcgi_param $var \"${!var}\";" >> ./enx; fi; done;
+sed -i '/location ~ \\.php$ {/ r enx' /etc/nginx/conf.d/default.conf
 #remove !
-#sed -i -e "s/!//g" ${fpm_pool}
+sed -i -e "s/!//g" ${fpm_pool}
 sed -i -e "s/server_name _/server_name ${NGINX_HOST}/g" /etc/nginx/conf.d/default.conf
